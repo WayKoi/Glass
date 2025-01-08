@@ -10,8 +10,14 @@ public class Path {
     private List<Point> _points = new ArrayList<>();
     private List<Color> _colours = new ArrayList<>();
 
+    private float _weight = 4;
+
+    public Path (float weight) {
+        _weight = weight;
+    }
+
     public void render(Graphics2D g) {
-        g.setStroke(new BasicStroke(4));
+        g.setStroke(new BasicStroke(_weight));
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         
         for (int i = 1; i < _points.size(); i++) {

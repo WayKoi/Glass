@@ -16,9 +16,15 @@ import javax.swing.JPanel;
 public class Canvas extends JPanel implements MouseListener, MouseMotionListener {
     
     private Image _img = null;
-    private Color _draw = new Color(255, 255, 0, 255);
+    private Color _draw = new Color(255, 255, 255, 255);
     private List<Path> _paths = new ArrayList<>();
     private Path _current = null;
+
+    private float _weight = 4;
+
+    public void setWeight (float weight) {
+        _weight = (float) Math.max(0.1, weight);
+    }
 
     public void setColour(Color colour) {
         _draw = colour;
@@ -87,7 +93,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
     @Override
     public void mousePressed(MouseEvent e) {
-        _current = new Path();
+        _current = new Path(_weight);
         
         Graphics2D graph = _img != null ? (Graphics2D) _img.getGraphics().create() : null;
         _current.add(e.getPoint(), _draw, graph);
