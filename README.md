@@ -14,7 +14,7 @@ You can undo a stroke by hitting ctrl+z like usual and you can close the program
 
 The main reason I made Glass is for those moments that you need to work something out but you don't have paper around.
 
-![a cube has been drawn and the coordinates for each point have been written next to it](image/cube.png)
+![a cube has been drawn and the coordinates for each point have been written next to it](images/cube.png)
 
 Glass will also appear on top of any window that you have open making it great for illustrating over it to explain it to someone or further your own understanding.
 
