@@ -14,110 +14,118 @@ import java.util.List;
 import javax.swing.JPanel;
 
 public class Canvas extends JPanel implements MouseListener, MouseMotionListener {
-    
-    private Image _img = null;
-    private Color _draw = new Color(255, 255, 255, 255);
-    private List<Path> _paths = new ArrayList<>();
-    private Path _current = null;
 
-    private float _weight = 4;
+	private Image _img = null;
+	private Color _draw = new Color(255, 255, 255, 255);
+	private List<Path> _paths = new ArrayList<>();
+	private Path _current = null;
 
-    public void setWeight (float weight) {
-        _weight = (float) Math.max(0.1, weight);
-    }
+	private float _weight = 4;
 
-    public void setColour(Color colour) {
-        _draw = colour;
-    }
-    
-    public Canvas () {
-        // setOpaque(false);
-        setDoubleBuffered(true);
-        setBackground(new Color(0, 0, 0, 0));
+	public void setWeight(float weight) {
+		_weight = (float) Math.max(0.1, weight);
+	}
 
-        addMouseListener(this);
-        addMouseMotionListener(this);
-    }
+	public void setColour(Color colour) {
+		_draw = colour;
+	}
 
-    public void Pop() {
-        int size = _paths.size();
-        if (size <= 0) { return; }
+	public Canvas() {
+		// setOpaque(false);
+		setDoubleBuffered(true);
+		setBackground(new Color(0, 0, 0, 0));
 
-        _paths.get(size - 1).clear(); // janitor
-        _paths.remove(size - 1);
+		addMouseListener(this);
+		addMouseMotionListener(this);
+	}
 
-        reRenderImage();
-        repaint();
-    }
+	public void Pop() {
+		int size = _paths.size();
+		if (size <= 0) {
+			return;
+		}
 
-    @Override
-    protected void paintComponent (Graphics g) {
-        super.paintComponent(g);
+		_paths.get(size - 1).clear(); // janitor
+		_paths.remove(size - 1);
 
-        if (_img == null) {
-            _img = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
-        }
+		reRenderImage();
+		repaint();
+	}
 
-        g.drawImage(_img, 0, 0, null);
-    }
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
 
-    private void reRenderImage() {
-        if (_img == null) { return; }
+		if (_img == null) {
+			_img = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+		}
 
-        setVisible(false);
+		g.drawImage(_img, 0, 0, null);
+	}
 
-        Graphics2D graph = (Graphics2D) _img.getGraphics();
-        
-        // Clear the image
-        graph.setComposite(AlphaComposite.Clear);
-        graph.fillRect(0, 0, getWidth(), getHeight());
-        graph.setComposite(AlphaComposite.SrcOver);
+	private void reRenderImage() {
+		if (_img == null) {
+			return;
+		}
 
-        for (Path path : _paths) {
-            path.render(graph);
-        }
+		setVisible(false);
 
-        graph.dispose();
+		Graphics2D graph = (Graphics2D) _img.getGraphics();
 
-        setVisible(true);
-    }
+		// Clear the image
+		graph.setComposite(AlphaComposite.Clear);
+		graph.fillRect(0, 0, getWidth(), getHeight());
+		graph.setComposite(AlphaComposite.SrcOver);
 
-    @Override
-    public void mouseClicked(MouseEvent e) { }
+		for (Path path : _paths) {
+			path.render(graph);
+		}
 
-    @Override
-    public void mouseEntered(MouseEvent e) { }
+		graph.dispose();
 
-    @Override
-    public void mouseExited(MouseEvent e) { }
+		setVisible(true);
+	}
 
-    @Override
-    public void mousePressed(MouseEvent e) {
-        _current = new Path(_weight);
-        
-        Graphics2D graph = _img != null ? (Graphics2D) _img.getGraphics().create() : null;
-        _current.add(e.getPoint(), _draw, graph);
+	@Override
+	public void mouseClicked(MouseEvent e) {
+	}
 
-        _paths.add(_current);
-    }
+	@Override
+	public void mouseEntered(MouseEvent e) {
+	}
 
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        _current = null;
-    }
+	@Override
+	public void mouseExited(MouseEvent e) {
+	}
 
-    @Override
-    public void mouseDragged(MouseEvent e) { 
-        Point next = e.getPoint();
+	@Override
+	public void mousePressed(MouseEvent e) {
+		_current = new Path(_weight);
 
-        Graphics2D graph = _img != null ? (Graphics2D) _img.getGraphics().create() : null;
-        _current.add(next, _draw, graph);
-        graph.dispose();
+		Graphics2D graph = _img != null ? (Graphics2D) _img.getGraphics().create() : null;
+		_current.add(e.getPoint(), _draw, graph);
 
-        repaint();
-    }
+		_paths.add(_current);
+	}
 
-    @Override
-    public void mouseMoved(MouseEvent e) { }
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		_current = null;
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		Point next = e.getPoint();
+
+		Graphics2D graph = _img != null ? (Graphics2D) _img.getGraphics().create() : null;
+		_current.add(next, _draw, graph);
+		graph.dispose();
+
+		repaint();
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+	}
 
 }
